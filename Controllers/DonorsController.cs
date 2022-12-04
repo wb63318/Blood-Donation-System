@@ -50,17 +50,7 @@ namespace Blood_Donation_System.Controllers
             var donorDto = _mapper.Map<Models.DTO.BloodBank.Donor>(donor);
             return Ok(donorDto);
         }
-        [HttpGet("{group}")]
-        public async Task<IActionResult> GetDonorsByBloodType(Group group)
-        {
-            var donors = await _donor.GetByBloodtype(group);
-            if(donors == null)
-            {
-                return Content("Not donors with this bloodtype");
-            }
-            var donorsDto = _mapper.Map<Models.DTO.BloodBank.Donor>(donors);
-            return Ok(donorsDto);
-        }
+       
         [HttpPost]
         public async Task<IActionResult> AddDonorAsync(Models.DTO.BloodBank.AddDonorRequest addDonor)
         {
@@ -87,7 +77,7 @@ namespace Blood_Donation_System.Controllers
                 dateofBirth = (DateTime)donor.dateofBirth,
                 bloodType= donor.bloodType,
                 location = donor.location,
-                Createddate = donor.Createddate
+                //Createddate = donor.Createddate
 
             };
             return CreatedAtAction(nameof(GetDonorByIdAsync) ,new { id = donorDto.Id }, donorDto);

@@ -11,15 +11,15 @@ namespace Blood_Donation_System.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : Controller
+    public class AccountsController : Controller
     {
         private readonly DonationSystemDbContext _dbContext;
 
-        public AccountController(DonationSystemDbContext dbContext)
+        public AccountsController(DonationSystemDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        [HttpPost("{register}")]
+        [HttpPost("register")]
         public async Task<IActionResult>RegisterAsync(SignUpRequest signUp)
         {
             if (await _dbContext.BloodBanks.AnyAsync(u => u.Email == signUp.Email ))
@@ -30,6 +30,7 @@ namespace Blood_Donation_System.Controllers
             var user = new BloodBank()
             {
                hospitalName = signUp.hospitalName,
+               UserName = signUp.UserName,
                location = signUp.location,
                PhoneNumber = signUp.phoneNumber,
                Email = signUp.Email,
