@@ -37,15 +37,9 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
 
         public async Task<IEnumerable<Donor>> GetAllAsync()
         {
-            return await _dbContext.Donors
-                .ToListAsync();
-        }
-
-        public async Task<Donor> GetByBloodtype(Group group)
-        {
             return await _dbContext
                 .Donors
-                .FirstOrDefaultAsync(x=>x.bloodType == group);
+                .ToListAsync();
         }
 
         public async Task<Donor> GetByIdAsync(Guid id)
@@ -61,6 +55,11 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .Donors
                 .FirstOrDefaultAsync(x => x.fullName == name);
         }
+
+        /*public Task<IEnumerable<Donor>> GroupByBloodtype()
+        {
+            throw new NotImplementedException();
+        }*/
 
         public async Task<Donor> UpdateAsync(Guid id, Donor donor)
         {

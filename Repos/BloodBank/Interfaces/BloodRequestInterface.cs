@@ -4,6 +4,7 @@ namespace Blood_Donation_System.Repos.BloodBank.Interfaces
 {
     public interface BloodRequestInterface
     {
+        Task <IEnumerable<BloodRequest>> GetAllAsync();
         Task<BloodRequest> GetAsync(Guid id);
         Task<BloodRequest> AddAsync(BloodRequest bloodRequest);
     }

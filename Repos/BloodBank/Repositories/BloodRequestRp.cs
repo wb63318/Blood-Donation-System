@@ -31,6 +31,9 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .FirstOrDefaultAsync(x=>x.Id == id);
         }
 
-        
+        public async Task<IEnumerable<BloodRequest>> GetAllAsync()
+        {
+            return await _dbContext.BloodRequests.ToListAsync();
+        }
     }
 }
