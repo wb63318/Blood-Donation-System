@@ -19,6 +19,7 @@ namespace Blood_Donation_System.Models.Entities.BloodBank
         public DateTime SignUpAt { get; set; }= DateTime.Now;
         public DateTime? ResetTokenExpires { get; set; }
         public string? PasswordResetToken { get; set; }
-        public IEnumerable<Supply> Supplies { get; set; }
+       /* public IEnumerable<Supply> Supplies { get; set; }
+        public IEnumerable<BloodRequest> Requests { get; set; }*/
     }
 }

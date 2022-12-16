@@ -2,11 +2,12 @@
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 using Blood_Donation_System.Repos.BloodBank.Interfaces;
 using Blood_Donation_System.Repos.BloodBank.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blood_Donation_System.Controllers
 {
-
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class DonorsController : Controller
@@ -20,9 +21,9 @@ namespace Blood_Donation_System.Controllers
             _donor = donor;
             _mapper = mapper;
         }
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:long}")]
         [ActionName("GetDonorByIdAsync")]
-        public async Task<IActionResult> GetDonorByIdAsync(Guid id)
+        public async Task<IActionResult> GetDonorByIdAsync(long id)
         {
             var donor = await _donor.GetByIdAsync(id);
             if(donor == null)
@@ -51,6 +52,7 @@ namespace Blood_Donation_System.Controllers
             return Ok(donorDto);
         }
        
+        
         [HttpPost]
         public async Task<IActionResult> AddDonorAsync(Models.DTO.BloodBank.AddDonorRequest addDonor)
         {
@@ -83,22 +85,22 @@ namespace Blood_Donation_System.Controllers
             return CreatedAtAction(nameof(GetDonorByIdAsync) ,new { id = donorDto.Id }, donorDto);
         }
         [HttpPut]
-        [Route("{id:guid}")]
-        public async Task<IActionResult> UpdateDonorDetailAsync([FromRoute] Guid id, [FromBody]Models.DTO.BloodBank.UpdateDonorRequest updateDonor)
+        [Route("{id:long}")]
+        public async Task<IActionResult> UpdateDonorDetailAsync([FromRoute] long id, [FromBody]Models.DTO.BloodBank.UpdateDonorRequest updateDonor)
         {
             var donor = new Models.Entities.BloodBank.Donor()
             {
                 fullName = updateDonor.fullName,
                 email = updateDonor.email,
                 phoneNumber = updateDonor.phoneNumber,
-                gender = updateDonor.gender,
+                gender = (Gender)updateDonor.gender,
                 bloodType = updateDonor.bloodType,
-                dateofBirth = updateDonor.dateofBirth,
+                dateofBirth = (DateTime)updateDonor.dateofBirth,
                 location = updateDonor.location,
                 Createddate = updateDonor.Updateddate
             };
             var donorDomain = await _donor.UpdateAsync(id, donor);
-            if (donor == null)
+            if (donorDomain == null)
             {
                 return NotFound();
             }
@@ -119,8 +121,8 @@ namespace Blood_Donation_System.Controllers
             return Ok(donorDto);
         }
         [HttpDelete]
-        [Route("{id:guid}")]
-        public async Task<IActionResult>DeleteDonorAsync(Guid id)
+        [Route("{id:long}")]
+        public async Task<IActionResult>DeleteDonorAsync(long id)
         {
             var donor = await _donor.DeleteAsync(id);
             if(donor == null)

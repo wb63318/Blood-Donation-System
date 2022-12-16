@@ -15,7 +15,7 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
         }
         public async Task<BloodRequest> AddAsync(BloodRequest bloodRequest)
         {
-            bloodRequest.Id = Guid.NewGuid();
+            
             await _dbContext.BloodRequests.AddAsync(bloodRequest);
             await _dbContext.SaveChangesAsync();
             return bloodRequest;
@@ -24,16 +24,21 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
 
         
 
-        public Task<BloodRequest> GetAsync(Guid id)
+        public Task<BloodRequest> GetAsync(long id)
         {
             return _dbContext
                 .BloodRequests
+                //.Include(x => x.BloodBank)
+                
                 .FirstOrDefaultAsync(x=>x.Id == id);
         }
 
         public async Task<IEnumerable<BloodRequest>> GetAllAsync()
         {
-            return await _dbContext.BloodRequests.ToListAsync();
+            return await _dbContext.BloodRequests
+                //.Include(x => x.BloodBank)
+                .ToListAsync();
+            
         }
     }
 }

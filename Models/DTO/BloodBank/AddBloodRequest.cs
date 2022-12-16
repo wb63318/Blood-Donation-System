@@ -4,6 +4,7 @@ namespace Blood_Donation_System.Models.DTO.BloodBank
 {
     public class AddBloodRequest
     {
+
         public Group bloodType { get; set; }
         public int Quantity { get; set; }
         public requestType requestType { get; set; }

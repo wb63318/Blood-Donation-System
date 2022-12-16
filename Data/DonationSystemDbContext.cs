@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Blood_Donation_System.Models.Entities.BloodBank;
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 

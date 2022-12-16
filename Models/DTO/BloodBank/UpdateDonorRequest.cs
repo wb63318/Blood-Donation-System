@@ -12,7 +12,7 @@ namespace Blood_Donation_System.Models.DTO.BloodBank
         public string? phoneNumber { get; set; }
         public Group? bloodType { get; set; }
         public Gender gender { get; set; }
-        public DateTime dateofBirth { get; set; }
+        public DateTime? dateofBirth { get; set; }
 
         public string? location { get; set; }
         public DateTime? Updateddate { get; set; } = DateTime.Now;

@@ -15,13 +15,13 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
         }
         public async Task<Donation> AddAsync(Donation donation)
         {
-            donation.Id = Guid.NewGuid();
+           
             await _dbContext.Donations.AddAsync(donation);
             await _dbContext.SaveChangesAsync();
             return donation;
         }
 
-        public async Task<Donation> DeleteAsync(Guid id)
+        public async Task<Donation> DeleteAsync(long id)
         {
            var existingDonation = await _dbContext.Donations.FindAsync(id);
             if(existingDonation == null)
@@ -40,7 +40,7 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Donation> GetAsync(Guid id)
+        public async Task<Donation> GetAsync(long id)
         {
             return await _dbContext
                 .Donations
@@ -54,7 +54,7 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .FirstOrDefaultAsync(x => x.recipientName == recipientname);
         }
 
-        public async Task<Donation> UpdateAsync(Guid id,Donation donation)
+        public async Task<Donation> UpdateAsync(long id,Donation donation)
         {
             var existingDonation = await _dbContext.Donations.FindAsync(id);
             if(existingDonation != null)

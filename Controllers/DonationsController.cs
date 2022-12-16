@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 using Blood_Donation_System.Repos.BloodBank.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blood_Donation_System.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
+    //[Route("[controller]")]
     public class DonationsController : Controller
     {
         private readonly DonationInterface _donation;
@@ -51,9 +54,9 @@ namespace Blood_Donation_System.Controllers
             return CreatedAtAction(nameof(GetDonationAsync), new { id = donationDto.Id }, donationDto);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:long}")]
         [ActionName("GetDonationAsync")]
-        public async Task<IActionResult>GetDonationAsync(Guid id)
+        public async Task<IActionResult>GetDonationAsync(long id)
         {
             var donation = await _donation.GetAsync(id);
             if (donation== null)
@@ -63,8 +66,8 @@ namespace Blood_Donation_System.Controllers
             var donationDto = _mapper.Map<Models.DTO.BloodBank.Donation>(donation);
             return Ok(donationDto);
         }
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult>DeleteDonationAsync(Guid id)
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult>DeleteDonationAsync(long id)
         {
             var donation = await _donation.DeleteAsync(id);
             if(donation== null)
@@ -83,8 +86,8 @@ namespace Blood_Donation_System.Controllers
             };
             return Ok(donationDto);
         }
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateDonationAsync([FromRoute] Guid id , [FromRoute] Models.DTO.BloodBank.UpdateDonationRequest updateDonation)
+        [HttpPut("{id:long}")]
+        public async Task<IActionResult> UpdateDonationAsync([FromRoute] long id , [FromRoute] Models.DTO.BloodBank.UpdateDonationRequest updateDonation)
         {
             var donation = new Models.Entities.BloodBank.Donation()
             {

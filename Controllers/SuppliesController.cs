@@ -4,10 +4,12 @@ using Blood_Donation_System.Models.Entities.BloodBank;
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 using Blood_Donation_System.Repos.BloodBank.Interfaces;
 using Blood_Donation_System.Repos.BloodBank.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blood_Donation_System.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class SuppliesController : Controller
@@ -29,9 +31,9 @@ namespace Blood_Donation_System.Controllers
             return Ok(suppliesDto);
 
         }
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:long}")]
         [ActionName("GetSupplyById")]
-        public async Task<IActionResult> GetSupplyById(Guid id)
+        public async Task<IActionResult> GetSupplyById(long id)
         {
             var supplyDomain = await _supply.GetAsync(id);
 
@@ -59,8 +61,8 @@ namespace Blood_Donation_System.Controllers
             };
             return CreatedAtAction(nameof(GetSupplyById), new { id = supplyDto.Id }, supplyDto);
         }
-        [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateSuppyAsync([FromRoute] Guid id, [FromBody] Models.DTO.BloodBank.UpdateSupplyDetail updateSupply)
+        [HttpPut("{id:long}")]
+        public async Task<IActionResult> UpdateSuppyAsync([FromRoute] long id, [FromBody] Models.DTO.BloodBank.UpdateSupplyDetail updateSupply)
         {
             var supply = new Models.Entities.BloodBank.Supply()
             {
@@ -83,8 +85,8 @@ namespace Blood_Donation_System.Controllers
             return Ok(supplyDto);
         }
 
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult>DeleteSsupplyAsync(Guid id)
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult>DeleteSsupplyAsync(long id)
         {
             var supplyDomain = await _supply.DeleteAsync(id);
             if(supplyDomain == null)

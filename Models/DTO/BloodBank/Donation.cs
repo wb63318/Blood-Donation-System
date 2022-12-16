@@ -6,7 +6,7 @@ namespace Blood_Donation_System.Models.DTO.BloodBank
     public class Donation
     {
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string? donorName { get; set; }
         public Group bloodGroup { get; set; }
         public int quantity { get; set; }        

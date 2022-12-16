@@ -2,22 +2,39 @@
 using Blood_Donation_System.Data;
 using Blood_Donation_System.Models.DTO.BloodBank;
 using Blood_Donation_System.Models.Entities.BloodBank;
-using Microsoft.AspNetCore.Identity;
+using Blood_Donation_System.Repos.BloodBank.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace Blood_Donation_System.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+   // [Route("[controller]")]
     public class AccountsController : Controller
     {
         private readonly DonationSystemDbContext _dbContext;
+        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
-        public AccountsController(DonationSystemDbContext dbContext)
+        public AccountsController(DonationSystemDbContext dbContext ,IConfiguration configuration, IUserService userService)
         {
             _dbContext = dbContext;
+            _configuration = configuration;
+            _userService = userService;
+        }
+
+        [HttpGet,Authorize]
+        public ActionResult<string> GetMe()
+        {
+            var accountName = _userService.GetAccountName();
+            return Ok(accountName);
         }
         [HttpPost("register")]
         public async Task<IActionResult>RegisterAsync(SignUpRequest signUp)
@@ -57,8 +74,29 @@ namespace Blood_Donation_System.Controllers
             {
                 return BadRequest("Password is incorrect");
             }
-            return Ok($"Welcome back, {user.hospitalName}! :)");
+            string token = CreateToken(user);
+            return Ok(token);
+            //return Ok($"Welcome back, {user.hospitalName}! :)");
         }
+
+        private string CreateToken(BloodBank user)
+        {
+            List<Claim> claims = new List<Claim>
+           {
+               new Claim(ClaimTypes.Name, user.UserName),
+               new Claim(ClaimTypes.GivenName,user.hospitalName)
+           };
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: cred);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
+        }
+
         [HttpPost]
         [Route("forgot-password")]
         public async Task<IActionResult> ForgotPasswordAsync(string email)

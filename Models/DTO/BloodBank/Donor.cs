@@ -9,7 +9,7 @@ namespace Blood_Donation_System.Models.DTO.BloodBank
     {
 
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         [RegularExpression("[a-zA-Z]", ErrorMessage = "Use letters only please")]
         [StringLength(30)]
         public string? fullName { get; set; }

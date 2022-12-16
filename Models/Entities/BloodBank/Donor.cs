@@ -8,7 +8,7 @@ namespace Blood_Donation_System.Models.Entities.BloodBank
     public class Donor
     {
         [Key]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
        
         public string? fullName { get; set; }
        
@@ -19,7 +19,7 @@ namespace Blood_Donation_System.Models.Entities.BloodBank
         public DateTime? dateofBirth { get; set; }
         //public string? imagePath { get; set; }
         public string? location { get; set; }
-        public IEnumerable<Donation>? Donations { get; set; }
+       // public IEnumerable<Donation>? Donations { get; set; }
         public DateTime? Createddate { get; set; } = DateTime.Now;
         
 

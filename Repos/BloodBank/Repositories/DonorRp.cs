@@ -3,6 +3,7 @@ using Blood_Donation_System.Models.Entities.BloodBank;
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 using Blood_Donation_System.Repos.BloodBank.Interfaces;
 using Microsoft.EntityFrameworkCore;
+/*using System.Data.Entity;*/
 
 namespace Blood_Donation_System.Repos.BloodBank.Repositories
 {
@@ -16,13 +17,12 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
         }
         public async Task<Donor> AddAsync(Donor donor)
         {
-           donor.Id = Guid.NewGuid();
-            await _dbContext.Donors.AddAsync(donor);
+           await _dbContext.Donors.AddAsync(donor);
             await _dbContext.SaveChangesAsync();
             return donor;
         }
 
-        public async Task<Donor> DeleteAsync(Guid id)
+        public async Task<Donor> DeleteAsync(long id)
         {
             var existingDonor = await _dbContext.Donors.FindAsync(id);
             if(existingDonor== null)
@@ -42,7 +42,7 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Donor> GetByIdAsync(Guid id)
+        public async Task<Donor> GetByIdAsync(long id)
         {
             return await _dbContext
                 .Donors
@@ -56,12 +56,9 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
                 .FirstOrDefaultAsync(x => x.fullName == name);
         }
 
-        /*public Task<IEnumerable<Donor>> GroupByBloodtype()
-        {
-            throw new NotImplementedException();
-        }*/
+       
 
-        public async Task<Donor> UpdateAsync(Guid id, Donor donor)
+        public async Task<Donor> UpdateAsync(long id, Donor donor)
         {
             var existingDonor = await _dbContext.Donors.FirstOrDefaultAsync(x => x.Id == id);
             if(existingDonor == null)
@@ -81,5 +78,10 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
             _ = await _dbContext.SaveChangesAsync();
             return existingDonor;
         }
+
+       
+        
+
+
     }
 }

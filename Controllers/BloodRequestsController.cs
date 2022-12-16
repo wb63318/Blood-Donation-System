@@ -2,12 +2,15 @@
 using Blood_Donation_System.Models.DTO.BloodBank;
 using Blood_Donation_System.Models.Entities.BloodBank.Enums;
 using Blood_Donation_System.Repos.BloodBank.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blood_Donation_System.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
+    //[Route("[controller]")]
     public class BloodRequestsController : Controller
     {
         private readonly BloodRequestInterface _bloodRequest;
@@ -18,9 +21,9 @@ namespace Blood_Donation_System.Controllers
             _bloodRequest = bloodRequest;
             _mapper = mapper;
         }
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:long}")]
         [ActionName("GetBloodRequestAsync")]
-        public async Task<IActionResult>GetBloodRequestAsync(Guid id)
+        public async Task<IActionResult>GetBloodRequestAsync(long id)
         {
             var bRequest = await _bloodRequest.GetAsync(id);
             if(bRequest == null)
