@@ -60,23 +60,24 @@ namespace Blood_Donation_System.Repos.BloodBank.Repositories
 
         public async Task<Donor> UpdateAsync(long id, Donor donor)
         {
-            var existingDonor = await _dbContext.Donors.FirstOrDefaultAsync(x => x.Id == id);
-            if(existingDonor == null)
+            var existingDonor = await _dbContext.Donors.FindAsync(id);
+            if(existingDonor != null)
             {
-                return null;
+                existingDonor.Id = donor.Id;
+                existingDonor.fullName = donor.fullName;
+                existingDonor.email = donor.email;
+                existingDonor.gender = donor.gender;
+                existingDonor.phoneNumber = donor.phoneNumber;
+                existingDonor.location = donor.location;
+                existingDonor.bloodType = donor.bloodType;
+                existingDonor.dateofBirth = donor.dateofBirth;
+                existingDonor.Createddate = donor.Createddate;
+                _ = await _dbContext.SaveChangesAsync();
+                return existingDonor;
             }
            
-            existingDonor.Id = donor.Id;
-            existingDonor.fullName = donor.fullName;
-            existingDonor.email = donor.email;
-            existingDonor.gender = donor.gender;
-            existingDonor.phoneNumber = donor.phoneNumber;
-            existingDonor.location = donor.location;
-            existingDonor.bloodType = donor.bloodType;
-            existingDonor.dateofBirth = donor.dateofBirth;
-            existingDonor.Createddate = donor.Createddate;
-            _ = await _dbContext.SaveChangesAsync();
-            return existingDonor;
+            
+            return null;
         }
 
        
